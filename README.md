@@ -13,7 +13,7 @@ This folder contains the collection of all projects completed by the AI team dur
 
 A collection of innovative projects focusing on Computer Vision, Natural Language Processing, and Workflow Automation.
 
----
+
 
 ## 🚀 Projects List
 
@@ -53,7 +53,7 @@ A comprehensive management system for educational bootcamps.
 *   **Description:** An NLP-driven system where users enter transaction statements in plain text (prose).
 *   **Automation:** The system automatically parses and records the transaction using **N8N** to automate the workflow process.
 
----
+
 
 ## 🛠 Tech Stack
 *   **Databases:** MongoDB
@@ -61,21 +61,20 @@ A comprehensive management system for educational bootcamps.
 *   **AI/ML:** Computer Vision, NLP, Prompt Engineering
 *   **Alerts:** SMTP/Email Integration
 
----
 
 ## 👥 Contributors
 *   **Niaz**
-    **Anas**
+*   **Anas**
 *   **Moiz**
 *   **Abdul Qayyum**
 *   **Rehan**
 *   **Mustafa**
 *   **M.Hassan**
-    **Ukkasha**
-    **Abdur Rehaman**
-    **Abdul Moiz**
+*   **Ukkasha**
+*   **Abdur Rehaman**
+*   **Abdul Moiz**
 
-```
+
 
 ## Structure
 
