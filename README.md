@@ -1,102 +1,44 @@
-# SMIT Bootcamp AI Team Projects
+# AI Projects Bootcamp 4.0
 
-This folder contains the collection of all projects completed by the AI team during the SMIT Bootcamp.
+A compact directory of AI and automation projects built during the SMIT Bootcamp.
 
-## Overview
+## Summary
 
-- Organized repository for AI Bootcamp projects
-- Each project is stored in its own folder within this repository
-- Includes implementation code, documentation, notebooks, and resources for each AI project
+This repository contains standalone AI project folders with production-ready code, utilities, and documentation. Projects span computer vision, NLP, automation, and applied analytics.
 
-## Project Portfolio: AI & Automation Solutions
+## Projects
 
-A collection of innovative projects focusing on Computer Vision, Natural Language Processing, and Workflow Automation.
+- `bootcamp_daily_progress_fraud_detector/` — bootcamp management, fraud detection, and progress tracking.
+- `bootcamp_meeting_ai_summaries/` — meeting summary generation using prompt engineering.
+- `bootcamp_quiz_generator/` — automated quiz generation from database content.
+- `Computer-Vision-mobile-detection/` — mobile phone detection and face recognition for safety monitoring.
+- `Fire & Smoke Detection System/` — real-time fire and smoke detection with alerts.
+- `fit_track_nutrition_detect/` — nutrition tracking from food images.
+- `AI Finance chat/` — NLP-based finance transaction parser with backend, frontend, and automation components.
 
+## Key Technologies
 
+- Python 3
+- Computer Vision
+- Natural Language Processing
+- MongoDB / local storage
+- Email/SMS alerting
+- Automation workflows
 
-## 🚀 Projects List
+## Usage
 
-### 1. Bootcamp Tracker
-**Team:** Niaz, Moiz, Qayyum  
-A comprehensive management system for educational bootcamps.
-*   **Dashboard:** Provides complete details and analytics of the bootcamp.
-*   **Fraud Detection:** Intelligent system to identify and filter duplicate entries.
-*   **Assignment Management:** Includes an automated assignment checker and a prompt-based assignment generator.
-
-### 2. Realtime Fire Detection System
-**Team:** Moiz, Rehan, Mustafa  
-*   **Description:** A safety system that detects fire or smoke in real-time using a webcam.
-*   **Features:** Upon detection, the system triggers an audible alarm and sends an email alert to the administrator, including a screenshot and a timestamp.
-
-### 3. Vision Guard (Computer Vision)
-*   **Description:** A monitoring system designed to detect mobile phone usage and perform face recognition.
-*   **Database & Alerts:** Uses **MongoDB** for data storage and triggers automated alerts via email.
-
-### 4. Meeting Mine Summary Generator
-**Team:** Niaz & Moiz  
-*   **Description:** A productivity tool that generates concise meeting summaries through expert **Prompt Engineering**.
-*   **Technology:** Utilizes **MongoDB** for managing and storing meeting data.
-
-### 5. Bootcamp Quiz Generator
-**Lead:** Niaz  
-*   **Description:** Automatically generates quizzes based on specific data extracted from a database.
-*   **Technology:** Leverages **MongoDB** for data extraction and automated quiz generation.
-
-### 6. Fit Tracker
-**Lead:** Niaz  
-*   **Description:** An AI-powered fitness tool that analyzes food images to assist with nutrition tracking.
-*   **Features:** Detects food items and predicts calories/macronutrients based on portion size.
-
-### 7. Finance Tracker (NLP + N8N)
-**Team:** Abdul Qayyum, Anas Niaz, M. Hassan  
-*   **Description:** An NLP-driven system where users enter transaction statements in plain text (prose).
-*   **Automation:** The system automatically parses and records the transaction using **N8N** to automate the workflow process.
-
-
-
-## 🛠 Tech Stack
-*   **Databases:** MongoDB
-*   **Automation:** N8N
-*   **AI/ML:** Computer Vision, NLP, Prompt Engineering
-*   **Alerts:** SMTP/Email Integration
-
-
-## 👥 Contributors
-*   **Niaz**
-*   **Anas**
-*   **Moiz**
-*   **Abdul Qayyum**
-*   **Rehan**
-*   **Mustafa**
-*   **M.Hassan**
-*   **Ukkasha**
-*   **Abdur Rehaman**
-*   **Abdul Moiz**
-
-
+1. Open the project folder you want to run.
+2. Install dependencies from that folder's `requirements.txt`.
+3. Follow the project-specific instructions in its README or main script.
 
 ## Structure
 
-- `ProjectName/` - Each project should have its own directory
-- `README.md` - This overview file
-- Additional project-specific files and folders should be located inside each project directory
-
-## Purpose
-
-The repository is intended to:
-
-- Keep SMIT Bootcamp AI projects organized
-- Provide a central location for team work and completed exercises
-- Make it easy to find, review, and share AI project work
-
-## How to Use
-
-1. Open the folder for the project you want to work on.
-2. Review the project-specific README or documentation inside that folder.
-3. Run the code or notebooks as described in each project directory.
+- `ProjectFolder/` — project source code and assets
+- `requirements.txt` — Python dependency list inside each project folder
+- `README.md` — root overview file
 
 ## Notes
 
-- Please keep this repository organized by naming project folders clearly.
-- Add a brief README inside each project folder describing the project, dependencies, and usage instructions.
-- Update this root README if the repository structure changes.
+- Keep each project self-contained.
+- Add or update project READMEs as projects evolve.
+- Use folder names for quick navigation.
