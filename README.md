@@ -8,8 +8,7 @@ This folder contains the collection of all projects completed by the AI team dur
 - Each project is stored in its own folder within this repository
 - Includes implementation code, documentation, notebooks, and resources for each AI project
 
-```markdown
-# Project Portfolio: AI & Automation Solutions
+## Project Portfolio: AI & Automation Solutions
 
 A collection of innovative projects focusing on Computer Vision, Natural Language Processing, and Workflow Automation.
 
