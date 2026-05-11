@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymongo[srv]
+requests
+beautifulsoup4
+scikit-learn
+python-dotenv
+dnspython
+lxml
