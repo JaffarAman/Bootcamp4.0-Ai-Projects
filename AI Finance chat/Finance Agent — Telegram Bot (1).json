@@ -1,0 +1,217 @@
+{
+  "name": "Finance Agent — Telegram Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        64
+      ],
+      "id": "5887b4c9-5265-44fd-8b26-b0da54e89d8a",
+      "webhookId": "6c2deee9-9870-461e-80b2-df70ee1e579d",
+      "credentials": {
+        "telegramApi": {
+          "id": "4lu4XtTRZDOyOUfS",
+          "name": "Telegram account"
+        }
+      },
+      "notes": "Listens for incoming Telegram messages. Set your Bot Token in credentials."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract message text and chat ID from Telegram update\nconst msg = items[0].json;\n\nconst chatId  = msg?.message?.chat?.id || msg?.chat?.id || null;\nconst text    = msg?.message?.text   || msg?.text   || '';\nconst from    = msg?.message?.from?.first_name || 'User';\n\nif (!chatId || !text) {\n  return [{ json: { chatId: null, text: '', from: '', skip: true } }];\n}\n\nreturn [{ json: { chatId, text, from, skip: false } }];"
+      },
+      "name": "Extract Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        64
+      ],
+      "id": "e61e83f4-6e26-42c2-b3a9-fe8c072d74be",
+      "notes": "Pulls chatId and text out of the Telegram payload"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "⏳ Processing your request...",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Send Typing Indicator",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        64
+      ],
+      "id": "b82bffaa-52a4-49ce-8fb7-376d2773cd43",
+      "webhookId": "30c4c6e3-6172-47ca-9aff-bc3d4570a9df",
+      "credentials": {
+        "telegramApi": {
+          "id": "4lu4XtTRZDOyOUfS",
+          "name": "Telegram account"
+        }
+      },
+      "notes": "Sends a 'processing' message so user knows bot is working"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://celesta-commutable-marybelle.ngrok-free.dev/api/v1/chat",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Extract Message').item.json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Send to Finance Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -96,
+        64
+      ],
+      "id": "1157478a-cf82-4b79-9eae-a99eef626426",
+      "notes": "Sends user message to FastAPI /chat endpoint"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the backend response and format for Telegram\nconst data = items[0].json;\nconst chatId = $('Extract Message').item.json.chatId;\n\nconst reply  = data?.reply  || '🤔 Sorry, I did not understand that.';\nconst action = data?.action_taken || 'none';\nconst extra  = data?.data   || null;\n\nlet finalMessage = reply;\n\n// If summary — add a formatted block\nif (action === 'get_summary' && extra) {\n  finalMessage = [\n    reply,\n    '',\n    '```',\n    `Period    : ${extra.period}`,\n    `Sales     : ${extra.total_sales}`,\n    `Expenses  : ${extra.total_expenses}`,\n    `Profit    : ${extra.profit}`,\n    `Txn Count : ${extra.transaction_count}`,\n    '```'\n  ].join('\\n');\n}\n\n// If transactions — format as list\nif (action === 'get_transactions' && extra?.transactions?.length) {\n  const lines = extra.transactions.slice(0, 5).map(t =>\n    `• ${t.type.toUpperCase()} — ${t.amount} (${t.category}) — ${t.date.slice(0,10)}`\n  );\n  finalMessage = reply + '\\n' + lines.join('\\n');\n}\n\nreturn [{ json: { chatId, finalMessage } }];"
+      },
+      "name": "Format Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        64
+      ],
+      "id": "5cadf13e-4a96-411a-92db-2907ec443eec",
+      "notes": "Formats backend response nicely for Telegram markdown"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.finalMessage }}",
+        "additionalFields": {
+          "disable_notification": false,
+          "disable_web_page_preview": true
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        64
+      ],
+      "id": "37a83873-a9ff-418d-977c-c65839a9e1ae",
+      "name": "Send a text message",
+      "webhookId": "93cd07a8-0dc7-41ad-a742-17334085d44a",
+      "credentials": {
+        "telegramApi": {
+          "id": "4lu4XtTRZDOyOUfS",
+          "name": "Telegram account"
+        }
+      },
+      "notes": "Sends the formatted reply back to user with quick-action buttons\n"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Message": {
+      "main": [
+        [
+          {
+            "node": "Send Typing Indicator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Typing Indicator": {
+      "main": [
+        [
+          {
+            "node": "Send to Finance Backend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Finance Backend": {
+      "main": [
+        [
+          {
+            "node": "Format Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Reply": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "237e931b-95b1-4d24-ad84-f4b35f13902d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "de6b2b41ee2462ca87c0981fd8583dccd75f502326cf94372c6520244e65f706"
+  },
+  "id": "vhJSwFCSeE6GKApW",
+  "tags": []
+}
