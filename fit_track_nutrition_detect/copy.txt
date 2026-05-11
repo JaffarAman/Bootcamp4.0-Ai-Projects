@@ -1,0 +1,82 @@
+from fastapi import FastAPI,File, UploadFile
+from config import GEMINI_API_KEY
+import base64
+import requests
+import json
+
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to the Nutrition Detection API!"}
+
+
+@app.post("/analyze-food")
+async def analyze_food(file: UploadFile = File(...)):
+
+    contents = await file.read()
+
+    base64_image = base64.b64encode(contents).decode("utf-8")
+
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+
+    prompt = """You are a strict food nutrition extraction system.
+
+Analyze the image carefully and estimate REAL PORTION SIZE based on visible quantity.
+
+"Return ONLY valid JSON. No explanation, no text.
+
+Output format must be exactly:
+
+{
+"food_name": "",
+"calories": 0,
+"protein": 0,
+"fats": 0,
+"carbs": 0,
+"serving": "",
+"confidence": "high|medium|low",
+"ingredients": []
+}
+
+Rules:
+-Return ONly json format if not then do it again until you do
+- Estimate portion size in grams (VERY IMPORTANT)
+- Use visual size (plate, pieces, thickness)
+- If unsure, give best approximation
+- Do NOT use generic "1 burger" only, always include grams
+- If ingredients are visible, list them in array
+- If not visible, return empty array []
+- Do not include any extra fields
+- Do not wrap in markdown or textdence.
+"""
+
+    payload = {
+        "generationConfig": {
+            "temperature": 0.2
+        },
+        "contents": [
+            {
+                "parts": [
+                    {"text": prompt},
+                    {
+                        "inline_data": {
+                            "mime_type": file.content_type,
+                            "data": base64_image
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+
+    response = requests.post(url, json=payload)
+
+    result = response.json()
+
+    clean_text = result["candidates"][0]["content"]["parts"][0]["text"]
+
+    
+
+    return json.loads(clean_text)
+

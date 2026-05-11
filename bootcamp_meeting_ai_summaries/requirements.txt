@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+scikit-learn
+motor
+pymongo
+python-dotenv
+pydantic
+streamlit
+requests
+pandas
+matplotlib
+python-multipart
+google-generativeai
+groq
+
